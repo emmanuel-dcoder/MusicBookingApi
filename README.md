@@ -54,11 +54,24 @@ The Music Booking API is a RESTful API designed to manage artist profiles, event
    - JWT-based authentication for secure access to protected endpoints.
    - Supports both artist and user logins.
 
-## Tech Stack
+## Technology Stack
 
-```bash
-$ NestJs, Typescript, MongoDB
-```
+- **Framework**: NestJS (Node.js)
+- **Database**: MongoDB with Mongoose ORM
+- **Authentication**: JWT (JSON Web Tokens) via `@nestjs/jwt` and `passport-jwt`
+- **Validation**: `class-validator` and `class-transformer`
+- **API Documentation**: Swagger (`@nestjs/swagger`)
+- **Deployment**: Render
+- **Version Control**: GitHub
+
+---
+
+## GitHub Repository
+
+The source code is available at:  
+[**GitHub Repo**](https://github.com/emmanuel-dcoder/MusicBookingApi)
+
+---
 
 ## Project setup
 
@@ -110,25 +123,6 @@ Below is a summary of the key endpoints. Refer to the Swagger or Postman documen
 | `/bookings/:id` | GET        | Get a booking by ID           | Yes (JWT)     |
 
 - **Protected Endpoints**: Require a Bearer token in the `Authorization` header, obtained from `/auth/login`.
-
----
-
-## Technology Stack
-
-- **Framework**: NestJS (Node.js)
-- **Database**: MongoDB with Mongoose ORM
-- **Authentication**: JWT (JSON Web Tokens) via `@nestjs/jwt` and `passport-jwt`
-- **Validation**: `class-validator` and `class-transformer`
-- **API Documentation**: Swagger (`@nestjs/swagger`)
-- **Deployment**: Render
-- **Version Control**: GitHub
-
----
-
-## GitHub Repository
-
-The source code is available at:  
-[**GitHub Repo**](https://github.com/emmanuel-dcoder/MusicBookingApi)
 
 ---
 
