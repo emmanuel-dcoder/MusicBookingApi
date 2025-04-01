@@ -66,6 +66,23 @@ The Music Booking API is a RESTful API designed to manage artist profiles, event
 
 ---
 
+## Base URL
+
+The API is hosted at:  
+**`https://musicbookingapi.onrender.com`**
+
+## API Documentation
+
+### Swagger Documentation
+
+Explore the interactive Swagger UI for detailed endpoint descriptions, request/response schemas, and testing:  
+[**Swagger Docs**](https://musicbookingapi.onrender.com/docs)
+
+### Postman Documentation
+
+Access the Postman collection for a comprehensive set of API requests with examples:  
+[**Postman Docs**](https://documenter.getpostman.com/view/23195379/2sB2cRE5Jd)
+
 ## GitHub Repository
 
 The source code is available at:  
@@ -73,34 +90,21 @@ The source code is available at:
 
 ---
 
-## Project setup
+## Compile and run the project
 
 ```bash
+#install dependencies
 $ npm install
+
+# development
+$ npm run start:dev
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
-
----
-
-## Base URL
-
-The API is hosted at:  
-**`https://musicbookingapi.onrender.com`**
-
----
-
-## API Documentation
-
-### Swagger Documentation
-
-![Swagger](https://via.placeholder.com/50?text=Swagger)  
-Explore the interactive Swagger UI for detailed endpoint descriptions, request/response schemas, and testing:  
-[**Swagger Docs**](https://musicbookingapi.onrender.com/docs)
-
-### Postman Documentation
-
-![Postman](https://via.placeholder.com/50?text=Postman)  
-Access the Postman collection for a comprehensive set of API requests with examples:  
-[**Postman Docs**](https://documenter.getpostman.com/view/23195379/2sB2cRE5Jd)
 
 ## Endpoints
 
@@ -125,26 +129,6 @@ Below is a summary of the key endpoints. Refer to the Swagger or Postman documen
 - **Protected Endpoints**: Require a Bearer token in the `Authorization` header, obtained from `/auth/login`.
 
 ---
-
-## Setup
-
-1. Clone the repository.
-2. Install dependencies: `npm install`.
-3. Set up environment variables in `.env`.
-4. Start the server: `npm run dev` or `npm start`.
-
-## Compile and run the project
-
-```bash
-# development
-$ npm run start:dev
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
 
 ## License
 
