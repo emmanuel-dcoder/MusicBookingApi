@@ -106,25 +106,36 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Environment Variables
+
+- `MONGO_URL`: MongoDB connection string.
+- `PORT`: Server port (default: 5000).
+- `TOKEN_EXPIRE_IN`: JWT expiry.
+- `SECRET_KEY`: JWT secret key.
+- `MAIL_PASSWORD`: mail password.
+- `MAIL_USER`: SMTP gmail email or username.
+- `MAIL_PORT`: SMTP gmail mail port, usually "465".
+- `MAIL_HOST`: SMTP gmail mail host, usually "smtp.gmail.com".
+
 ## Endpoints
 
 Below is a summary of the key endpoints. Refer to the Swagger or Postman documentation for full details.
 
-| **Endpoint**    | **Method** | **Description**               | **Protected** |
-| --------------- | ---------- | ----------------------------- | ------------- |
-| `/auth/login`   | POST       | Authenticate a user or artist | No            |
-| `/users`        | POST       | Create a new user             | No            |
-| `/users`        | GET        | Get all users                 | No            |
-| `/users/:id`    | GET        | Get a user by ID              | No            |
-| `/artists`      | POST       | Create a new artist           | No            |
-| `/artists`      | GET        | Get all artists               | No            |
-| `/artists/:id`  | GET        | Get an artist by ID           | No            |
-| `/events`       | POST       | Create a new event            | No            |
-| `/events`       | GET        | Get all events                | No            |
-| `/events/:id`   | GET        | Get an event by ID            | No            |
-| `/bookings`     | POST       | Create a new booking          | Yes (JWT)     |
-| `/bookings`     | GET        | Get all bookings              | Yes (JWT)     |
-| `/bookings/:id` | GET        | Get a booking by ID           | Yes (JWT)     |
+| **Endpoint**          | **Method** | **Description**               | **Protected** |
+| --------------------- | ---------- | ----------------------------- | ------------- |
+| `api/v1/auth/login`   | POST       | Authenticate a user or artist | No            |
+| `api/v1/users`        | POST       | Create a new user             | No            |
+| `api/v1/users`        | GET        | Get all users                 | Yes (JWT)     |
+| `api/v1/users/:id`    | GET        | Get a user by ID              | Yes (JWT)     |
+| `api/v1/artists`      | POST       | Create a new artist           | No            |
+| `api/v1/artists`      | GET        | Get all artists               | No            |
+| `api/v1/artists/:id`  | GET        | Get an artist by ID           | No            |
+| `api/v1/events`       | POST       | Create a new event            | Yes (JWT)     |
+| `api/v1/events`       | GET        | Get all events                | No            |
+| `api/v1/events/:id`   | GET        | Get an event by ID            | No            |
+| `api/v1/bookings`     | POST       | Create a new booking          | Yes (JWT)     |
+| `api/v1/bookings`     | GET        | Get all bookings              | Yes (JWT)     |
+| `api/v1/bookings/:id` | GET        | Get a booking by ID           | Yes (JWT)     |
 
 - **Protected Endpoints**: Require a Bearer token in the `Authorization` header, obtained from `/auth/login`.
 
