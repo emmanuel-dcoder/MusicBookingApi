@@ -86,7 +86,7 @@ Access the Postman collection for a comprehensive set of API requests with examp
 ## GitHub Repository
 
 The source code is available at:  
-[**GitHub Repo**](https://github.com/emmanuel-dcoder/MusicBookingApi)
+[**GitHub Repo**](https://github.com/codewithemmy/Music-booking-app)
 
 ---
 
