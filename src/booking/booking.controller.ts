@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Put,
+  Delete,
+  HttpStatus,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import {
@@ -10,6 +20,8 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { Booking } from './schemas/booking.schema';
+import { UpdateBookingDto } from './dto/update-booking.dto';
+import { successResponse } from 'src/core/config/response';
 
 @ApiTags('bookings')
 @ApiBearerAuth()
@@ -29,7 +41,13 @@ export class BookingController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createBookingDto: CreateBookingDto) {
-    return await this.bookingService.create(createBookingDto);
+    const data = await this.bookingService.create(createBookingDto);
+    return successResponse({
+      message: 'Booking created successfully',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get()
@@ -41,7 +59,13 @@ export class BookingController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async findAll() {
-    return await this.bookingService.findAll();
+    const data = await this.bookingService.findAll();
+    return successResponse({
+      message: 'List of bookings',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get(':id')
@@ -51,6 +75,53 @@ export class BookingController {
   @ApiResponse({ status: 404, description: 'Booking not found' })
   async findOne(@Param('id') id: string) {
     const data = await this.bookingService.fetchOne(id);
-    return data;
+    return successResponse({
+      message: 'Booking details',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a booking' })
+  @ApiBody({ type: UpdateBookingDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Booking updated successfully',
+    type: Booking,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Booking not found' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateBookingDto: UpdateBookingDto,
+  ) {
+    const data = await this.bookingService.update(id, updateBookingDto);
+    return successResponse({
+      message: 'Booking updated successfully',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Cancel a booking' })
+  @ApiResponse({
+    status: 200,
+    description: 'Booking cancelled successfully',
+    type: Booking,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Booking not found' })
+  cancel(@Param('id') id: string) {
+    const data = this.bookingService.cancel(id);
+    return successResponse({
+      message: 'Booking cancelled successfully',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  HttpStatus,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
@@ -10,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from './schemas/user.schema';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { successResponse } from 'src/core/config/response';
 
 @ApiTags('users')
 @Controller('api/v1/users')
@@ -26,7 +35,14 @@ export class UserController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createUserDto: CreateUserDto) {
-    return await this.userService.create(createUserDto);
+    const data = await this.userService.create(createUserDto);
+
+    return successResponse({
+      message: 'User created successfully',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get()
@@ -35,7 +51,13 @@ export class UserController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'List of users', type: [User] })
   async findAll() {
-    return await this.userService.findAll();
+    const data = await this.userService.findAll();
+    return successResponse({
+      message: 'List of users',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get(':id')
@@ -45,6 +67,12 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User details', type: User })
   @ApiResponse({ status: 404, description: 'User not found' })
   async findOne(@Param('id') id: string) {
-    return await this.userService.findOne(id);
+    const data = await this.userService.findOne(id);
+    return successResponse({
+      message: 'List of users',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 }

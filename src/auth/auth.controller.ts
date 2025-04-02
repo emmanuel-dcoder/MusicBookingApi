@@ -1,7 +1,8 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { successResponse } from 'src/core/config/response';
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -25,7 +26,13 @@ export class AuthController {
       loginDto.password,
       'artist',
     );
-    return await this.authService.login(user);
+    const data = await this.authService.login(user);
+    return successResponse({
+      message: 'Login successful',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   //user login
@@ -45,6 +52,12 @@ export class AuthController {
       loginDto.password,
       'user',
     );
-    return this.authService.login(user);
+    const data = this.authService.login(user);
+    return successResponse({
+      message: 'Login successful',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 }

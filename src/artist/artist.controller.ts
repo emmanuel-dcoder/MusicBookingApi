@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpStatus } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { Artist } from './schemas/artist.schema';
+import { successResponse } from 'src/core/config/response';
 
 @ApiTags('artists')
 @Controller('api/v1/artists')
@@ -19,14 +20,26 @@ export class ArtistController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createArtistDto: CreateArtistDto) {
-    return await this.artistService.create(createArtistDto);
+    const data = await this.artistService.create(createArtistDto);
+    return successResponse({
+      message: 'Artist created successfully',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all artists' })
   @ApiResponse({ status: 200, description: 'List of artists', type: [Artist] })
   async findAll() {
-    return await this.artistService.findAll();
+    const data = await this.artistService.findAll();
+    return successResponse({
+      message: 'List of artists',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get(':id')
@@ -34,6 +47,12 @@ export class ArtistController {
   @ApiResponse({ status: 200, description: 'Artist details', type: Artist })
   @ApiResponse({ status: 404, description: 'Artist not found' })
   async findOne(@Param('id') id: string) {
-    return await this.artistService.findOne(id);
+    const data = await this.artistService.findOne(id);
+    return successResponse({
+      message: 'Artist details',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 }

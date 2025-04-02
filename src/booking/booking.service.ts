@@ -11,6 +11,7 @@ import { Booking } from './schemas/booking.schema';
 import { Event } from 'src/event/schemas/event.schema';
 import { MailService } from 'src/core/mail/email';
 import { User } from 'src/user/schemas/user.schema';
+import { UpdateBookingDto } from './dto/update-booking.dto';
 
 @Injectable()
 export class BookingService {
@@ -79,5 +80,38 @@ export class BookingService {
         error?.status ?? error?.statusCode ?? 500,
       );
     }
+  }
+
+  async update(
+    id: string,
+    updateBookingDto: UpdateBookingDto,
+  ): Promise<Booking> {
+    try {
+      const booking = await this.bookingModel.findById(id);
+      if (!booking) throw new BadRequestException('Invalid booking id');
+
+      if (updateBookingDto.quantity && booking.event) {
+        const event = await this.eventModel.findById(booking.event);
+        updateBookingDto.totalPrice =
+          event.ticketPrice * updateBookingDto.quantity;
+      }
+      const updateBooking = await this.bookingModel.findOneAndUpdate(
+        { _id: new mongoose.Types.ObjectId(id) },
+        { ...updateBookingDto },
+        { new: true, runValidators: true },
+      );
+      return updateBooking;
+    } catch (error) {
+      throw new HttpException(
+        error?.response?.message ?? error?.message,
+        error?.status ?? error?.statusCode ?? 500,
+      );
+    }
+  }
+
+  async cancel(id: string): Promise<Booking> {
+    const booking = await this.bookingModel.findByIdAndDelete(id);
+    if (!booking) throw new BadRequestException('Unable to delete booking');
+    return booking;
   }
 }

@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsNumber, IsMongoId } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsMongoId,
+  IsOptional,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBookingDto {
@@ -23,4 +29,19 @@ export class CreateBookingDto {
   @ApiProperty({ description: 'Number of tickets', example: 2 })
   @IsNumber()
   quantity: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  totalPrice: number;
+
+  @ApiProperty({
+    description: 'Booking status',
+    example: 'confirmed',
+    enum: ['pending', 'confirmed', 'cancelled'],
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  status?: string;
 }

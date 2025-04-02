@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  HttpStatus,
+} from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import {
@@ -10,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 import { Event } from './schemas/event.schema';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { successResponse } from 'src/core/config/response';
 
 @ApiTags('events')
 @Controller('api/v1/events')
@@ -28,14 +37,26 @@ export class EventController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createEventDto: CreateEventDto) {
-    return await this.eventService.create(createEventDto);
+    const data = await this.eventService.create(createEventDto);
+    return successResponse({
+      message: 'Event created successfully',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all events' })
   @ApiResponse({ status: 200, description: 'List of events', type: [Event] })
   async findAll() {
-    return await this.eventService.findAll();
+    const data = await this.eventService.findAll();
+    return successResponse({
+      message: 'List of events',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 
   @Get(':id')
@@ -43,6 +64,12 @@ export class EventController {
   @ApiResponse({ status: 200, description: 'Event details', type: Event })
   @ApiResponse({ status: 404, description: 'Event not found' })
   async findOne(@Param('id') id: string) {
-    return await this.eventService.findOne(id);
+    const data = await this.eventService.findOne(id);
+    return successResponse({
+      message: 'Event details',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
   }
 }
