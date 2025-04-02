@@ -109,11 +109,15 @@ export class BookingService {
     }
   }
 
-  async cancel(id: string): Promise<Booking> {
-    const booking = await this.bookingModel.findOneAndDelete({
-      _id: new mongoose.Types.ObjectId(id),
-    });
-    if (!booking) throw new BadRequestException('Unable to delete booking');
-    return booking;
+  async cancel(id: string): Promise<void> {
+    try {
+      const booking = await this.bookingModel.findByIdAndDelete(id);
+      if (!booking) throw new BadRequestException('Unable to delete booking');
+    } catch (error) {
+      throw new HttpException(
+        error?.response?.message ?? error?.message,
+        error?.status ?? error?.statusCode ?? 500,
+      );
+    }
   }
 }

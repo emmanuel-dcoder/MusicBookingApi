@@ -115,8 +115,8 @@ export class BookingController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Booking not found' })
-  cancel(@Param('id') id: string) {
-    const data = this.bookingService.cancel(id);
+  async cancel(@Param('id') id: string) {
+    const data = await this.bookingService.cancel(id);
     return successResponse({
       message: 'Booking cancelled successfully',
       code: HttpStatus.OK,
