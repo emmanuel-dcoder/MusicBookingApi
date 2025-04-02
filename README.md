@@ -121,21 +121,29 @@ $ npm run start:prod
 
 Below is a summary of the key endpoints. Refer to the Swagger or Postman documentation for full details.
 
-| **Endpoint**          | **Method** | **Description**               | **Protected** |
-| --------------------- | ---------- | ----------------------------- | ------------- |
-| `api/v1/auth/login`   | POST       | Authenticate a user or artist | No            |
-| `api/v1/users`        | POST       | Create a new user             | No            |
-| `api/v1/users`        | GET        | Get all users                 | Yes (JWT)     |
-| `api/v1/users/:id`    | GET        | Get a user by ID              | Yes (JWT)     |
-| `api/v1/artists`      | POST       | Create a new artist           | No            |
-| `api/v1/artists`      | GET        | Get all artists               | No            |
-| `api/v1/artists/:id`  | GET        | Get an artist by ID           | No            |
-| `api/v1/events`       | POST       | Create a new event            | Yes (JWT)     |
-| `api/v1/events`       | GET        | Get all events                | No            |
-| `api/v1/events/:id`   | GET        | Get an event by ID            | No            |
-| `api/v1/bookings`     | POST       | Create a new booking          | Yes (JWT)     |
-| `api/v1/bookings`     | GET        | Get all bookings              | Yes (JWT)     |
-| `api/v1/bookings/:id` | GET        | Get a booking by ID           | Yes (JWT)     |
+| **Endpoint**                | **Method** | **Description**                                   | **Protected** |
+| --------------------------- | ---------- | ------------------------------------------------- | ------------- |
+| `api/v1/auth/login`         | POST       | Authenticate a user or artist                     | No            |
+| `api/v1/users`              | POST       | Create a new user                                 | No            |
+| `api/v1/users`              | GET        | Get all users                                     | Yes (JWT)     |
+| `api/v1/users/:id`          | GET        | Get a user by ID                                  | Yes (JWT)     |
+| `api/v1/users/profile/me`   | GET        | Get logged-in user profile                        | Yes (JWT)     |
+| `api/v1/users/profile/me`   | PATCH      | Update logged-in user profile (excluding email)   | Yes (JWT)     |
+| `api/v1/artists`            | POST       | Create a new artist                               | No            |
+| `api/v1/artists`            | GET        | Get all artists                                   | No            |
+| `api/v1/artists/:id`        | GET        | Get an artist by ID                               | No            |
+| `api/v1/artists/profile/me` | GET        | Get logged-in artist profile                      | Yes (JWT)     |
+| `api/v1/artists/profile/me` | PATCH      | Update logged-in artist profile (excluding email) | Yes (JWT)     |
+| `api/v1/events`             | POST       | Create a new event                                | Yes (JWT)     |
+| `api/v1/events`             | GET        | Get all events                                    | No            |
+| `api/v1/events/:id`         | GET        | Get an event by ID                                | No            |
+| `api/v1/events/:id`         | PATCH      | Update an event                                   | No            |
+| `api/v1/events/:id`         | DELETE     | Delete an event                                   | No            |
+| `api/v1/bookings`           | POST       | Create a new booking                              | Yes (JWT)     |
+| `api/v1/bookings`           | GET        | Get all bookings                                  | Yes (JWT)     |
+| `api/v1/bookings/:id`       | GET        | Get a booking by ID                               | Yes (JWT)     |
+| `api/v1/bookings/:id`       | PATCH      | Update a booking                                  | Yes (JWT)     |
+| `api/v1/bookings/:id`       | DELETE     | Cancel a booking                                  | Yes (JWT)     |
 
 - **Protected Endpoints**: Require a Bearer token in the `Authorization` header, obtained from `/auth/login`.
 
