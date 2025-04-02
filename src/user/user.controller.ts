@@ -6,6 +6,8 @@ import {
   Param,
   UseGuards,
   HttpStatus,
+  Req,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +21,7 @@ import {
 import { User } from './schemas/user.schema';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { successResponse } from 'src/core/config/response';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('users')
 @Controller('api/v1/users')
@@ -60,6 +63,23 @@ export class UserController {
     });
   }
 
+  @Get('profile/me')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get logged-in user profile' })
+  @ApiResponse({ status: 200, description: 'User profile', type: User })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async getProfile(@Req() req: any) {
+    const data = await this.userService.findOne(req.user['userId']);
+    return successResponse({
+      message: 'User profile',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -68,6 +88,27 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'User not found' })
   async findOne(@Param('id') id: string) {
     const data = await this.userService.findOne(id);
+    return successResponse({
+      message: 'List of users',
+      code: HttpStatus.OK,
+      status: 'success',
+      data,
+    });
+  }
+
+  @Put('profile/me')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update logged-in user profile (excluding email)' })
+  @ApiBody({ type: UpdateUserDto })
+  @ApiResponse({ status: 200, description: 'User profile updated', type: User })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async updateProfile(@Req() req: any, @Body() updateUserDto: UpdateUserDto) {
+    const data = await this.userService.update(
+      req.user['userId'],
+      updateUserDto,
+    );
     return successResponse({
       message: 'List of users',
       code: HttpStatus.OK,

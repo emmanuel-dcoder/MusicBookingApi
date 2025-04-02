@@ -52,7 +52,7 @@ export class AuthController {
       loginDto.password,
       'user',
     );
-    const data = this.authService.login(user);
+    const data = await this.authService.login(user);
     return successResponse({
       message: 'Login successful',
       code: HttpStatus.OK,

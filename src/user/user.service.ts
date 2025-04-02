@@ -5,6 +5,7 @@ import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hashPassword } from 'src/core/common/utils/utility';
 import { MailService } from 'src/core/mail/email';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -70,6 +71,29 @@ export class UserService {
       if (!data) throw new BadRequestException('user not found');
 
       return data;
+    } catch (error) {
+      throw new HttpException(
+        error?.response?.message ?? error?.message,
+        error?.status ?? error?.statusCode ?? 500,
+      );
+    }
+  }
+
+  async update(
+    id: string,
+    updateUserDto: Pick<UpdateUserDto, 'name'>,
+  ): Promise<User> {
+    try {
+      const user = await this.userModel.findOneAndUpdate(
+        {
+          _id: new mongoose.Types.ObjectId(id),
+        },
+        { ...updateUserDto },
+        { new: true, runValidators: true },
+      );
+      if (!user) throw new BadRequestException('Unable to update user');
+      user.password = undefined;
+      return user;
     } catch (error) {
       throw new HttpException(
         error?.response?.message ?? error?.message,

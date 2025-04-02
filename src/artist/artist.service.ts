@@ -5,6 +5,7 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { Artist } from './schemas/artist.schema';
 import { MailService } from 'src/core/mail/email';
 import { hashPassword } from 'src/core/common/utils/utility';
+import { UpdateArtisteDto } from './dto/update-artist.dto';
 
 @Injectable()
 export class ArtistService {
@@ -67,8 +68,31 @@ export class ArtistService {
       );
 
       if (!data) throw new BadRequestException('event not found');
-
       return data;
+    } catch (error) {
+      throw new HttpException(
+        error?.response?.message ?? error?.message,
+        error?.status ?? error?.statusCode ?? 500,
+      );
+    }
+  }
+
+  async update(
+    id: string,
+    updateArtistDto: Pick<UpdateArtisteDto, 'name' | 'bio'>,
+  ): Promise<Artist> {
+    try {
+      const artist = await this.artistModel.findOneAndUpdate(
+        {
+          _id: new mongoose.Types.ObjectId(id),
+        },
+        { ...updateArtistDto },
+        { new: true, runValidators: true },
+      );
+      if (!artist) throw new BadRequestException('Unable to update artist');
+
+      artist.password = undefined;
+      return artist;
     } catch (error) {
       throw new HttpException(
         error?.response?.message ?? error?.message,
